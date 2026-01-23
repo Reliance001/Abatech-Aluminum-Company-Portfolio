@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View our portfolio of completed aluminum windows, doors, and roofing projects in Lagos and beyond.">
+    <title>Project Gallery - Abatech Works</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #1e40af;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --text: #1f2937;
+            --light: #f9fafb;
+            --dark: #111827;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+        .navbar.scrolled { background: rgba(255, 255, 255, 0.98); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .logo a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--primary); }
+        .mobile-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .mobile-toggle span { width: 25px; height: 3px; background: var(--text); transition: 0.3s; }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://cdn.mos.cms.futurecdn.net/TqmZy5eEd4tKZd5fGbKUiD.jpg') center/cover no-repeat;
+            height: 60vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        .page-header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+        
+        /* Gallery Section */
+        .gallery-section {
+            padding: 6rem 0;
+            background: var(--light);
+        }
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            opacity: 1;
+            transition: all 0.4s;
+        }
+        .gallery-item.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
+        .gallery-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s;
+        }
+        .gallery-item:hover .gallery-overlay { transform: translateY(0); }
+        .gallery-overlay h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .gallery-overlay p { opacity: 0.9; }
+        
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 6rem 0;
+        }
+        .cta-content h2 { font-size: 3rem; margin-bottom: 1rem; }
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        .btn-light:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: #9ca3af;
+            padding: 4rem 0 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .footer h4 { color: white; margin-bottom: 1.5rem; }
+        .footer ul { list-style: none; }
+        .footer a { color: #9ca3af; text-decoration: none; }
+        .footer a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 4rem;
+                transition: left 0.4s;
+            }
+            .nav-menu.active { left: 0; }
+            .mobile-toggle { display: flex; }
+            .page-header h1 { font-size: 2.8rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html">Abatech</a>
+                </div>
+                <button class="mobile-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html" class="active">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header" data-aos="fade">
+        <div class="container">
+            <h1>Project Gallery</h1>
+            <p>Explore our portfolio of completed projects</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="windows">Windows</button>
+                <button class="filter-btn" data-filter="doors">Doors</button>
+                <button class="filter-btn" data-filter="roofing">Roofing</button>
+                <button class="filter-btn" data-filter="residential">Residential</button>
+                <button class="filter-btn" data-filter="commercial">Commercial</button>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Windows -->
+                <div class="gallery-item" data-category="windows residential" data-aos="fade-up">
+                    <img src="https://www.eterniawindows.com/wp-content/uploads/2024/12/Optimizing-Your-Home-with-Modern-Sliding-Window-Designs-Desktop.webp" alt="Modern Sliding Windows">
+                    <div class="gallery-overlay">
+                        <h3>Modern Sliding Windows</h3>
+                        <p>Residential Project - Lagos</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="windows residential" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://www.aiswindows.com/aiswindowscms/uploads/blog/blog_thumb_1760688639.webp" alt="Aluminum Sliding Windows">
+                    <div class="gallery-overlay">
+                        <h3>Premium Sliding Windows</h3>
+                        <p>Luxury Home Installation</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="windows residential" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://image.made-in-china.com/365f3j00BnNlVbcaArzo/Hurricane-Impact-Residential-Double-Glazed-Aluminium-Sliding-Glass-Windows.webp" alt="Double Glazed Sliding Windows">
+                    <div class="gallery-overlay">
+                        <h3>Double Glazed Sliding Windows</h3>
+                        <p>Modern Residence</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="windows" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://www.woodminium.com/wp-content/uploads/2021/12/aluminium-window-design-for-your-home.jpg" alt="Casement Window Installation">
+                    <div class="gallery-overlay">
+                        <h3>Casement Window Installation</h3>
+                        <p>Custom Home</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="windows residential" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://www.andersenwindows.com/-/media/Project/AndersenCorporation/AndersenWindows/AndersenWindows/images/windows-and-doors/windows/casement-windows/2025-optimization/casement-windows-category-900x600.jpg" alt="Elegant Casement Windows">
+                    <div class="gallery-overlay">
+                        <h3>Elegant Casement Windows</h3>
+                        <p>Residential Renovation</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="windows residential" data-aos="fade-up" data-aos-delay="500">
+                    <img src="https://img.staticmb.com/mbcontent/images/crop/uploads/2023/11/bay-windows_0_1200.jpg.webp" alt="Bay Window Feature">
+                    <div class="gallery-overlay">
+                        <h3>Bay Window Feature</h3>
+                        <p>Living Room Renovation</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="windows commercial" data-aos="fade-up" data-aos-delay="600">
+                    <img src="https://image.made-in-china.com/318f0j00qQhRKOeGgPcr/Tesia-Unitized-Aluminum-Wall-Panel-Glass-Metal-Aluminium-Spider-Frameless-Curtain-Wall-1-mp4.webp" alt="Commercial Window Wall">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Curtain Wall</h3>
+                        <p>Office Building</p>
+                    </div>
+                </div>
+
+                <!-- Doors -->
+                <div class="gallery-item" data-category="doors residential" data-aos="fade-up">
+                    <img src="https://windowworx.co.uk/wp-content/uploads/2024/05/S-500-with-curved-glass-1024x683.webp" alt="Grand Entrance Door">
+                    <div class="gallery-overlay">
+                        <h3>Grand Entrance Door</h3>
+                        <p>Luxury Home</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="doors residential" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://www.pirnardoors.com/pic/page/front-doors/buying/buy-alu-wood-front-door.jpg" alt="Premium Entrance Door">
+                    <div class="gallery-overlay">
+                        <h3>Premium Entrance Door</h3>
+                        <p>Modern Villa</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="doors residential" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://energyshieldwindowsanddoors.com/wp-content/uploads/9-Benefits-of-Upgrading-to-Sliding-Glass-Patio-Doors.jpg" alt="Sliding Patio Door">
+                    <div class="gallery-overlay">
+                        <h3>Sliding Patio Door</h3>
+                        <p>Indoor-Outdoor Living</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="doors residential" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://images.nanawall.com/gallery/2022-12/ginsberg-residence04v2.jpg" alt="Folding Door System">
+                    <div class="gallery-overlay">
+                        <h3>Bifold Folding Doors</h3>
+                        <p>Modern Home</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="doors residential" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://www.houstonmonterreydoor.com/images/products/aluminum-doors/bifold/modern-aluminum-bifold-doors.jpg" alt="Modern Bifold Doors">
+                    <div class="gallery-overlay">
+                        <h3>Modern Bifold System</h3>
+                        <p>Seamless Transition</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="doors commercial" data-aos="fade-up" data-aos-delay="500">
+                    <img src="https://www.crlaurence.com/medias/1202-entrance.webp" alt="Commercial Entrance">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Glass Entrance</h3>
+                        <p>Corporate Office</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="doors commercial" data-aos="fade-up" data-aos-delay="600">
+                    <img src="https://i.ytimg.com/vi/H3fWUANN3tw/hq720.jpg" alt="Security Door System">
+                    <div class="gallery-overlay">
+                        <h3>Smart Security Door</h3>
+                        <p>Business Facility</p>
+                    </div>
+                </div>
+
+                <!-- Roofing -->
+                <div class="gallery-item" data-category="roofing residential" data-aos="fade-up">
+                    <img src="https://horchroofing.com/wp-content/uploads/2024/04/Are-standing-seam-metal-roofs-worth-it.jpg" alt="Standing Seam Roof">
+                    <div class="gallery-overlay">
+                        <h3>Standing Seam Roof</h3>
+                        <p>Modern Residence</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="roofing residential" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://res.cloudinary.com/angi-prod/image/upload/f_auto/q_auto/v1757079214/farmhouse-black-metal-roof-1036309826.jpg" alt="Elegant Standing Seam">
+                    <div class="gallery-overlay">
+                        <h3>Elegant Metal Roof</h3>
+                        <p>Contemporary Home</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="roofing commercial" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://www.watermasterroofing.com.au/wp-content/uploads/2020/05/Metal-roof-installation-Melbourne.jpg" alt="Commercial Flat Roof">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Flat Roof</h3>
+                        <p>Industrial Building</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="roofing" data-aos="fade-up" data-aos-delay="300">
+                    <img src="http://sunzoutoutdoor.com/cdn/shop/products/attached-pergola-canopy-or-carport-aluminium-frame-838362.jpg" alt="Canopy Roofing">
+                    <div class="gallery-overlay">
+                        <h3>Aluminum Canopy</h3>
+                        <p>Outdoor Entertainment Area</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="roofing residential" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://replacementskylights.com/wp-content/uploads/2023/11/metal-roof-skylights-1024x768.jpg" alt="Skylight Integration">
+                    <div class="gallery-overlay">
+                        <h3>Roof with Skylights</h3>
+                        <p>Natural Light Solution</p>
+                    </div>
+                </div>
+
+                <!-- Mixed / Residential / Commercial -->
+                <div class="gallery-item" data-category="residential windows doors" data-aos="fade-up">
+                    <img src="https://www.aiswindows.com/aiswindowscms/uploads/blog/blog_thumb_1757413318.webp" alt="Complete Home Transformation">
+                    <div class="gallery-overlay">
+                        <h3>Full Home Transformation</h3>
+                        <p>Windows & Doors Replacement</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="residential" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://fairco.ie/wp-content/uploads/2023/07/Fairco-Kitchen-transformation-with-Aluminium-doors-and-windows-3.jpg" alt="Modern Villa Project">
+                    <div class="gallery-overlay">
+                        <h3>Modern Villa Project</h3>
+                        <p>Luxury Residential</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="commercial" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://c8.alamy.com/comp/2MCBYHY/office-building-with-white-aluminum-composite-panels-facade-wall-made-of-glass-and-metal-abstract-modern-business-architecture-2MCBYHY.jpg" alt="Office Complex">
+                    <div class="gallery-overlay">
+                        <h3>Modern Office Complex</h3>
+                        <p>Corporate Headquarters</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="commercial" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://lynx-designs.com/wp-content/uploads/2025/11/LOB_0058-Lynx_fassade-Sanford-1024x681-1-768x511.jpg" alt="Office Facade">
+                    <div class="gallery-overlay">
+                        <h3>Aluminum Facade Office</h3>
+                        <p>Professional Building</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="commercial doors" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://prlglass.com/wp-content/uploads/2024/03/storefront-glass-slider-4-1536x788.jpg" alt="Retail Storefront">
+                    <div class="gallery-overlay">
+                        <h3>Retail Storefront</h3>
+                        <p>Shopping Center</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="commercial" data-aos="fade-up" data-aos-delay="500">
+                    <img src="https://www.crlaurence.com/medias/400t-400at-blade-image.webp" alt="Hotel Entrance">
+                    <div class="gallery-overlay">
+                        <h3>Hotel Grand Entrance</h3>
+                        <p>Hospitality Project</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" data-aos="fade">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Inspired by What You See?</h2>
+                <p>Let's create something amazing for your property in Lagos</p>
+                <a href="contact.html" class="btn btn-light">Start Your Project</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Abatech Works</h4>
+                    <p>Premium aluminum windows, doors, and roofing solutions with expert craftsmanship.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html#windows">Windows</a></li>
+                        <li><a href="services.html#doors">Doors</a></li>
+                        <li><a href="services.html#roofing">Roofing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>📞 (555) 123-4567</li>
+                        <li>📧 info@abatechworks.com</li>
+                        <li>📍 Lagos, Nigeria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Abatech Works. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        // Gallery Filter
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.gallery-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.getAttribute('data-filter');
+                
+                items.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category').includes(filter)) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
