@@ -64,65 +64,6 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// Form Validation
-const contactForm = document.getElementById('contactForm');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const service = document.getElementById('service').value;
-        const message = document.getElementById('message').value.trim();
-        
-        // Validation
-        let isValid = true;
-        let errorMessage = '';
-        
-        if (name === '') {
-            errorMessage += 'Name is required.\n';
-            isValid = false;
-        }
-        
-        if (email === '' || !isValidEmail(email)) {
-            errorMessage += 'Valid email is required.\n';
-            isValid = false;
-        }
-        
-        if (phone === '') {
-            errorMessage += 'Phone number is required.\n';
-            isValid = false;
-        }
-        
-        if (service === '') {
-            errorMessage += 'Please select a service.\n';
-            isValid = false;
-        }
-        
-        if (message === '') {
-            errorMessage += 'Message is required.\n';
-            isValid = false;
-        }
-        
-        if (!isValid) {
-            alert(errorMessage);
-            return;
-        }
-        
-        // If validation passes
-        alert('Thank you for your message! We will get back to you soon.');
-        contactForm.reset();
-    });
-}
-
-// Email validation helper
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
 
 // Gallery Filter
 const filterButtons = document.querySelectorAll('.filter-btn');
