@@ -62,30 +62,33 @@ if (form) {
     submitBtn.textContent = "Sending...";
 
    try {
-     const response = await fetch(
-       "https://script.google.com/macros/s/AKfycbxZ5nlTuWR3iIRf-ijdRWUbd3VtUORIJ0vsqiUV3cenAZvoQf0T2r_ia8B6VVkcN_oLkg/exec",
-       {
-         method: "POST",
-         headers: {
-           "Content-Type": "text/plain;charset=utf-8",
-         },
-         body: JSON.stringify(formData),
-       },
-     );
+  await fetch(
+    "https://script.google.com/macros/s/AKfycbzmjx-cGXMfkbQChOoJwYwsVlc1nvaITc0F25a7UPAg20Pyzi1_MjPzhtsvnjpN8p16cw/exec",
+    {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(formData),
+    }
+  );
 
-     if (!response.ok) {
-       throw new Error("Network response not ok");
-     }
+  // If fetch didn't throw, treat as success
+     setTimeout(()=>{
+        showMessage(
+    "Thank you! Your message has been sent successfully. We’ll contact you within 24 hours.",
+    "success"
+  );
+     },1200);
+ 
+  form.reset();
 
-     showMessage(
-       "Thank you! Your message has been sent successfully. We’ll contact you within 24 hours.",
-       "success",
-     );
-     form.reset();
-   } catch (err) {
-     console.error(err);
-     showMessage("Something went wrong. Please try again.", "error");
-   }
+} catch (err) {
+  console.error(err);
+  showMessage("Something went wrong. Please try again.", "error");
+}
+
 
 
     submitBtn.disabled = true;
